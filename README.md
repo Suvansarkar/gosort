@@ -12,8 +12,10 @@ The algorithm extends efficiently to the case of multiple items per processor. I
 ### How to run
 
 ```bash
-    go run main.go
+    go run oddeven/oddeven.go <number of processes>
 ```
+
+if number of processes are not given a default value of 10 will be taken.
 
 ## Sasaki's time-optimal algorithm for distributed sorting on a line networkSasaki's time optimal sort
 
