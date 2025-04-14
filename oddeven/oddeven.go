@@ -6,7 +6,12 @@ import (
 	"os"
 	"strconv"
 	"sync"
+	"time"
 )
+
+var messages_sent int = 0
+var messages_received int = 0
+var comparisions int = 0
 
 func process(id int, value int, wg *sync.WaitGroup, prev *chan int, next *chan int, final *[]int, round int) {
 	defer wg.Done()
@@ -16,20 +21,24 @@ func process(id int, value int, wg *sync.WaitGroup, prev *chan int, next *chan i
 		if odd {
 			if next != nil {
 				value = send(next, value)
+				messages_sent++
 			}
 		} else {
 			if prev != nil {
 				value = recieve(prev, value)
+				messages_received++
 			}
 		}
 	} else {
 		if odd {
 			if prev != nil {
 				value = recieve(prev, value)
+				messages_received++
 			}
 		} else {
 			if next != nil {
 				value = send(next, value)
+				messages_sent++
 			}
 		}
 	}
@@ -43,6 +52,7 @@ func send(ch *chan int, value int) int {
 	if recv < value {
 		value = recv
 	}
+	comparisions++
 	return value
 }
 
@@ -52,6 +62,7 @@ func recieve(ch *chan int, value int) int {
 	if recv >= value {
 		value = recv
 	}
+	comparisions++
 	return value
 }
 
@@ -79,15 +90,18 @@ func main() {
 
 	var arr []int = randArray(N)
 	fmt.Println("Random array generated:", arr)
+	var channels = make([]chan int, N-1)
+	for i := range channels {
+		channels[i] = make(chan int)
+	}
+
+	// Only start after all channels are created and arrays have been generated
+	start := time.Now()
 
 	var wg sync.WaitGroup
 	for j := 0; j < N-1; j++ {
-		var channels = make([]chan int, N-1)
 		for i := 0; i < N; i++ {
 			wg.Add(1)
-			if i != N-1 {
-				channels[i] = make(chan int)
-			}
 			if i == 0 {
 				go process(i, arr[i], &wg, nil, &channels[i], &arr, j)
 			} else if i == N-1 {
@@ -97,8 +111,11 @@ func main() {
 			}
 		}
 		wg.Wait()
-		fmt.Println("Pass: ", j+1)
 	}
 
 	fmt.Println("Array after ", N-1, " passes: ", arr)
+	fmt.Println("Messages sent: ", messages_sent)
+	fmt.Println("Messages received: ", messages_received)
+	fmt.Println("Comparisions: ", comparisions)
+	fmt.Println("Execution time: ", time.Since(start))
 }
