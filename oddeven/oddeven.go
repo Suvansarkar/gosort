@@ -74,21 +74,10 @@ func randArray(n int) []int {
 	return arr
 }
 
-func main() {
-	var args = os.Args
-	var N int
-	if len(args) >= 2 {
-		var err error
-		N, err = strconv.Atoi(args[1])
-		if err != nil {
-			fmt.Println("Error: ", err)
-			return
-		}
-	} else {
-		N = 10
-	}
-
+func run(N int) {
 	var arr []int = randArray(N)
+	fmt.Println("N = ", N)
+	fmt.Println("-----------------------")
 	fmt.Println("Random array generated:", arr)
 	var channels = make([]chan int, N-1)
 	for i := range channels {
@@ -118,4 +107,23 @@ func main() {
 	fmt.Println("Messages received: ", messages_received)
 	fmt.Println("Comparisions: ", comparisions)
 	fmt.Println("Execution time: ", time.Since(start))
+	fmt.Println("==========================")
+}
+
+func main() {
+	var args = os.Args
+	fmt.Println("==========================")
+	if len(args) >= 2 {
+		N, err := strconv.Atoi(args[1])
+		if err != nil {
+			fmt.Println("Error: ", err)
+			return
+		}
+		run(N)
+	} else {
+		run(10)
+		run(20)
+		run(30)
+	}
+
 }
