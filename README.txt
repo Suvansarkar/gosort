@@ -9,6 +9,14 @@ The algorithm extends efficiently to the case of multiple items per processor. I
 
 > Source: wikipedia - https://en.wikipedia.org/wiki/Odd%E2%80%93even_sort
 
+## Comparisions
+
+| Algorithm/Implementation | Time Complexity | Average Runtime (ms) |
+|-------------------------|-----------------|---------------------|
+| Odd Even transposition  | (n-1) rounds -> O(n^2)| 45                  |
+| Sasaki's time optimal   | (n-1) rounds -> O(n^2)| 78                  |
+| Alternative time optimal| (n-1) rounds -> O(n^2)| 150                 |
+
 ### How to run
 
 ```bash
