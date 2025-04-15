@@ -15,133 +15,178 @@ var messages_sent int = 0
 var messages_received int = 0
 var comparisions int = 0
 
-func process(id int, value values, wg *sync.WaitGroup, prev *chan int, next *chan int, final *[]values, round int) {
+type Element struct {
+	Value    int
+	IsUnique bool // Mark for tracking minimum and maximum elements
+}
+
+type Process struct {
+	ID   int
+	Area int     // Used to decide which value to select at the end
+	VL   Element // Left value
+	VR   Element // Right value
+}
+
+func process(id int, value *Process, wg *sync.WaitGroup, prev *chan Element, next *chan Element, rounds int) {
 	defer wg.Done()
 
-	// if first element, only check with last. Same with last element
-	// Place data on right channels first, then check left channels, then send on left channels and check right channels
-	if id == 0 {
-		*next <- value.right
-		*next <- value.marked
-		recv := <-*next
-		marked := <-*next
-		if recv < value.right {
-			value.right = recv
-			value.marked = marked
+	// First complete all communications
+	// Then lets decide what to do with it.
+
+	// All send right, receive left, send left, receive right
+
+	var recvL, recvR Element
+	if next != nil {
+		*next <- value.VR
+		messages_sent++
+	}
+	if prev != nil {
+		recvL = <-*prev
+		messages_received++
+	}
+	if prev != nil {
+		*prev <- value.VL
+		messages_sent++
+	}
+	if next != nil {
+		recvR = <-*next
+		messages_received++
+	}
+
+	if recvL.Value > value.VL.Value && id != 0 {
+		comparisions++
+		value.VL.Value = recvL.Value
+		if value.VL.IsUnique {
+			value.Area += 1
 		}
-	} else {
-		if id%2 == 0 {
-
-		} else {
-			*next <- value.right
-			*next <- value.marked
-			recv1 := <-*prev
-			marked1 := <-*prev
-			*prev <- value.left
-			*prev <- value.marked
-			recv2 := <-*next
-			marked2 := <-*next
-			if recv1 > value.right {
-				value.right = recv1
-				value.marked = marked1
-			}
-			if recv2 < value.right {
-				value.right = recv2
-				value.marked = marked2
-			}
+		if recvL.IsUnique {
+			value.VL.IsUnique = recvL.IsUnique
+			value.Area -= 1
 		}
 	}
-	(*final)[id] = value
-}
 
-func send(ch *chan int, value int) int {
-	*ch <- value
-	var recv int = <-*ch
-	if recv < value {
-		value = recv
+	if recvR.Value < value.VR.Value && id != rounds-1 {
+		comparisions++
+		value.VR.Value = recvR.Value
+		value.VR.IsUnique = recvR.IsUnique
 	}
-	comparisions++
-	return value
-}
 
-func recieve(ch *chan int, value int) int {
-	recv := <-*ch
-	*ch <- value
-	if recv >= value {
-		value = recv
+	if value.VR.Value < value.VL.Value && id != rounds-1 {
+		comparisions++
+		tempInt := value.VR.Value
+		tempBool := value.VR.IsUnique
+
+		value.VR.Value = value.VL.Value
+		value.VR.IsUnique = value.VL.IsUnique
+
+		value.VL.Value = tempInt
+		value.VL.IsUnique = tempBool
 	}
-	comparisions++
-	return value
+	// (*final)[id] = value
 }
 
-func randArray(n int) []values {
-	var arr = make([]values, n)
+func randArray(n int) []Process {
+	var arr = make([]Process, n)
 	for i := range arr {
-		var randInt int = rand.IntN(n + 10)
+		var randInt int = rand.IntN(n + 100)
 		if i == 0 {
-			arr[i].right = randInt
-			arr[i].marked = 1
-			arr[i].a = -1
+			arr[i] = Process{
+				ID:   i,
+				Area: -1,
+				VR: Element{
+					Value:    randInt,
+					IsUnique: true,
+				},
+			}
 		} else if i == n-1 {
-			arr[i].left = randInt
-			arr[i].marked = -1
-			arr[i].a = 1
+			arr[i] = Process{
+				ID:   i,
+				Area: 0,
+				VL: Element{
+					Value:    randInt,
+					IsUnique: true,
+				},
+			}
 		} else {
-			arr[i].left = randInt
-			arr[i].right = randInt
+			arr[i] = Process{
+				ID:   i,
+				Area: 0,
+				VL: Element{
+					Value:    randInt,
+					IsUnique: false,
+				},
+				VR: Element{
+					Value:    randInt,
+					IsUnique: false,
+				},
+			}
 		}
 	}
 	return arr
 }
 
-type values struct {
-	right  int
-	left   int
-	marked int // 0 = not marked, -1 = left, 1 = right
-	a      int // I don't remember what a is but it is important. trust.
-}
-
-func main() {
-	start := time.Now()
-
-	var args = os.Args
-	var N int = 10
-	if len(args) >= 2 {
-		var err error
-		N, err = strconv.Atoi(args[1])
-		if err != nil {
-			fmt.Println("Error: ", err)
-			return
-		}
-	} else {
-		N = 10
+func run(N int) {
+	var arr []Process = randArray(N)
+	fmt.Println("Random array generated:")
+	fmt.Print("[ ")
+	for i := range arr {
+		fmt.Print("[ ", arr[i].VL.Value, arr[i].VR.Value, " ]")
 	}
+	fmt.Print("] \n")
 
-	var arr []values = randArray(N)
-	fmt.Println("Random array generated:", arr)
+	// Only start after all channels are created and arrays have been generated
+	start := time.Now()
 
 	var wg sync.WaitGroup
 	for j := 0; j < N-1; j++ {
-		var channels = make([]chan int, N-1)
+		var channels = make([]chan Element, N-1)
 		for i := 0; i < N; i++ {
 			wg.Add(1)
 			if i != N-1 {
-				channels[i] = make(chan int)
+				channels[i] = make(chan Element)
 			}
 			if i == 0 {
-				go process(i, arr[i], &wg, nil, &channels[i], &arr, j)
+				go process(i, &arr[i], &wg, nil, &channels[i], N)
 			} else if i == N-1 {
-				go process(i, arr[i], &wg, &channels[i-1], nil, &arr, j)
+				go process(i, &arr[i], &wg, &channels[i-1], nil, N)
 			} else {
-				go process(i, arr[i], &wg, &channels[i-1], &channels[i], &arr, j)
+				go process(i, &arr[i], &wg, &channels[i-1], &channels[i], N)
 			}
 		}
 		wg.Wait()
 	}
 
-	fmt.Println("Array after ", N-1, " passes: ", arr)
+	fmt.Println("Array after ", N-1, " passes: ")
+	fmt.Print("[ ")
+	for i := range arr {
+		if arr[i].Area == -1 {
+			fmt.Print(arr[i].VR.Value, " ")
+		} else {
+			fmt.Print(arr[i].VL.Value, " ")
+		}
+	}
+	fmt.Print("] \n")
+
 	fmt.Println("Messages sent: ", messages_sent)
 	fmt.Println("Messages received: ", messages_received)
 	fmt.Println("Comparisions: ", comparisions)
 	fmt.Println("Execution time: ", time.Since(start))
+	fmt.Println("==========================")
+}
+
+func main() {
+	var args = os.Args
+	fmt.Println("==========================")
+	if len(args) >= 2 {
+		N, err := strconv.Atoi(args[1])
+		if err != nil {
+			fmt.Println("Error: ", err)
+			return
+		}
+		run(N)
+	} else {
+		run(10)
+		run(20)
+		run(30)
+	}
 }

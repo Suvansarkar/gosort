@@ -11,14 +11,13 @@ func main() {
 	fmt.Println("")
 	fmt.Println("To run Odd Even transposition sort, run:")
 	fmt.Println("go run oddeven/oddeven.go <number of processes>")
-	fmt.Println("if number of processes are not given a default of 10 will be taken")
+	fmt.Println("if number of processes are not given a default of 10, 20 and 30 will be taken")
 	fmt.Println("")
 	fmt.Println("To run Sasaki's Time Optimal Algorithm, run:")
 	fmt.Println("go run sasaki/sasaki.go <number of processes>")
-	fmt.Println("[WIP]")
+	fmt.Println("if number of processes are not given a default of 10, 20 and 30 will be taken")
 	fmt.Println("")
 	fmt.Println("To run Alternative Time Optimal Algorithm, run:")
 	fmt.Println("go run alternative/alternative.go <number of processes>")
-	fmt.Println("[WIP]")
-
+	fmt.Println("if number of processes are not given a default of 10, 20 and 30 will be taken")
 }

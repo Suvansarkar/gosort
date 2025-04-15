@@ -55,7 +55,7 @@ func process(id int, value int, wg *sync.WaitGroup, prev *chan int, next *chan i
 			messages_received++
 			ints := []int{prev_value, value}
 			slices.Sort(ints)
-			comparisions += 3
+			comparisions += 2
 			final_value = ints[1]
 			*prev <- ints[0]
 			messages_sent++

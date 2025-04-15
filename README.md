@@ -14,8 +14,42 @@ The algorithm extends efficiently to the case of multiple items per processor. I
 ```bash
     go run oddeven/oddeven.go <number of processes>
 ```
-> if number of processes are not given a default value of `10` will be taken.
+> if number of processes are not given a default values of `10`,`20` and `30` will be taken.
+
+### Sample Output
+
+![Odd Even algorithm output](/screenshots/oddeven.png)
 
 ## Sasaki's time-optimal algorithm for distributed sorting on a line networkSasaki's time optimal sort
 
+"We have achieved a strict lower time bound of n − 1 for distributed sorting on a line network, where n is the number of processes. The lower time bound has traditionally been considered to be n because it is proved based on the number of disjoint comparison-exchange operations in parallel sorting on a linear array. Our result has overthrown the traditional common belief.  2001 Elsevier Science B.V. All rights reserved."
+
+> Source: https://www.sciencedirect.com/science/article/abs/pii/S0020019001003076
+
+### How to run
+
+```bash
+    go run sasaki/sasaki.go <number of processes>
+```
+> if number of processes are not given a default values of `10`,`20` and `30` will be taken.
+
+### Sample Output
+
+![Sasaki's algorithm output](/screenshots/sasaki.png)
+
 ## An alternative time-optimal algorithm for distributed sorting on a line network
+
+An alternative approach where each node is labelled from 0 through 2, the middle node receives the data from the neighbouring nodes, compares the value and sends the correct value back to the respective node. The labels are then incremented by 1, where 2 loops back to 0. (n-1) rounds algorithm.
+
+### How to run
+
+```bash
+    go run alternative/alternative.go <number of processes>
+```
+
+> if number of processes are not given a default values of `10`,`20` and `30` will be taken.
+
+### Sample Output
+
+![Alternative algorithm output](/screenshots/alternative.png)
+
