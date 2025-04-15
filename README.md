@@ -4,8 +4,11 @@ A distributed system project where I implement three different models of sorting
 ## Details
 
 **Name**: Suvan Sarkar
+
 **Roll No**: S20220010220
+
 **Course**: Distributed Systems
+
 **Assignment Code**: assign01
 
 ## Comparisions
