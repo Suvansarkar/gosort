@@ -14,37 +14,46 @@ The algorithm extends efficiently to the case of multiple items per processor. I
 ```bash
     go run oddeven/oddeven.go <number of processes>
 ```
-> if number of processes are not given a default values of `10`,`20` and `30` will be taken.
+> if number of processes are not given a default values of `10`,`20`, `30` and `50` will be taken.
 
 ### Sample Output
 
 ==========================
 N =  10
 -----------------------
-Random array generated: [6 19 19 7 7 6 2 7 13 19]
-Array after  9  passes:  [2 6 6 7 7 7 13 19 19 19]
+Random array generated: [14 0 16 3 10 6 2 15 4 19]
+Array after  9  passes:  [0 2 3 4 6 10 14 15 16 19]
 Messages sent:  40
 Messages received:  40
 Comparisions:  80
-Execution time:  64.786µs
+Execution time:  88.925µs
 ==========================
 N =  20
 -----------------------
-Random array generated: [4 11 28 22 8 3 3 21 17 11 27 18 27 26 5 18 12 22 14 4]
-Array after  19  passes:  [3 3 4 4 5 8 11 11 12 14 17 18 18 21 22 22 26 27 27 28]
+Random array generated: [25 27 10 16 14 15 11 15 22 15 9 22 5 20 7 9 0 10 5 9]
+Array after  19  passes:  [0 5 5 7 9 9 9 10 10 11 14 15 15 15 16 20 22 22 25 27]
 Messages sent:  220
-Messages received:  219
-Comparisions:  439
-Execution time:  168.105µs
+Messages received:  220
+Comparisions:  440
+Execution time:  157.77µs
 ==========================
 N =  30
 -----------------------
-Random array generated: [2 25 21 24 14 10 21 5 29 39 26 35 5 29 18 34 8 30 16 17 27 4 1 0 39 3 36 17 7 18]
-Array after  29  passes:  [0 1 2 3 4 5 5 7 8 10 14 16 17 17 18 18 21 21 24 25 26 27 29 29 30 34 35 36 39 39]
-Messages sent:  640
-Messages received:  639
+Random array generated: [22 17 7 34 10 7 12 26 5 32 13 25 14 31 31 36 39 22 24 6 34 39 20 6 14 23 2 38 4 3]
+Array after  29  passes:  [2 3 4 5 6 6 7 7 10 12 13 14 14 17 20 22 22 23 24 25 26 31 31 32 34 34 36 38 39 39]
+Messages sent:  639
+Messages received:  640
 Comparisions:  1279
-Execution time:  559.394µs
+Execution time:  492.439µs
+==========================
+N =  50
+-----------------------
+Random array generated: [40 26 26 26 28 5 48 20 55 46 8 1 7 21 38 17 59 7 26 39 9 41 6 13 36 2 44 42 4 6 10 50 53 18 6 48 30 40 14 50 25 24 42 43 19 36 29 30 56 14]
+Array after  49  passes:  [1 2 4 5 6 6 6 7 7 8 9 10 13 14 14 17 18 19 20 21 24 25 26 26 26 26 28 29 30 30 36 36 38 39 40 40 41 42 42 43 44 46 48 48 50 50 53 55 56 59]
+Messages sent:  1836
+Messages received:  1839
+Comparisions:  3674
+Execution time:  1.114159ms
 ==========================
 
 ## Sasaki's time-optimal algorithm for distributed sorting on a line networkSasaki's time optimal sort
@@ -58,37 +67,46 @@ Execution time:  559.394µs
 ```bash
     go run sasaki/sasaki.go <number of processes>
 ```
-> if number of processes are not given a default values of `10`,`20` and `30` will be taken.
+> if number of processes are not given a default values of `10`,`20`, `30` and `50` will be taken.
 
 ### Sample Output
 
 ==========================
 Random array generated:
-[ [ 0 62 ][ 87 87 ][ 25 25 ][ 24 24 ][ 37 37 ][ 66 66 ][ 14 14 ][ 26 26 ][ 93 93 ][ 63 0 ]]
+[ [ 0 65 ][ 108 108 ][ 15 15 ][ 46 46 ][ 82 82 ][ 89 89 ][ 40 40 ][ 3 3 ][ 103 103 ][ 22 0 ]]
 Array after  9  passes:
-[ 14 24 25 26 37 62 63 66 87 93 ]
+[ 3 15 22 40 46 65 82 89 103 108 ]
 Messages sent:  162
 Messages received:  162
-Comparisions:  102
-Execution time:  112.743µs
+Comparisions:  123
+Execution time:  111.682µs
 ==========================
 Random array generated:
-[ [ 0 72 ][ 9 9 ][ 61 61 ][ 44 44 ][ 50 50 ][ 45 45 ][ 5 5 ][ 109 109 ][ 75 75 ][ 59 59 ][ 74 74 ][ 74 74 ][ 106 106 ][ 89 89 ][ 45 45 ][ 85 85 ][ 5 5 ][ 4 4 ][ 11 11 ][ 50 0 ]]
+[ [ 0 74 ][ 59 59 ][ 107 107 ][ 33 33 ][ 73 73 ][ 27 27 ][ 64 64 ][ 109 109 ][ 21 21 ][ 103 103 ][ 104 104 ][ 8 8 ][ 55 55 ][ 95 95 ][ 44 44 ][ 32 32 ][ 11 11 ][ 0 0 ][ 2 2 ][ 73 0 ]]
 Array after  19  passes:
-[ 4 5 5 9 11 44 45 45 50 50 59 61 72 74 74 75 85 89 106 109 ]
+[ 0 2 8 11 21 27 32 33 44 55 59 64 73 73 74 95 103 104 107 109 ]
 Messages sent:  884
 Messages received:  884
-Comparisions:  615
-Execution time:  474.447µs
+Comparisions:  821
+Execution time:  315.377µs
 ==========================
 Random array generated:
-[ [ 0 95 ][ 76 76 ][ 94 94 ][ 36 36 ][ 54 54 ][ 48 48 ][ 37 37 ][ 123 123 ][ 6 6 ][ 42 42 ][ 91 91 ][ 86 86 ][ 32 32 ][ 101 101 ][ 119 119 ][ 41 41 ][ 95 95 ][ 10 10 ][ 57 57 ][ 108 108 ][ 12 12 ][ 108 108 ][ 19 19 ][ 109 109 ][ 52 52 ][ 46 46 ][ 104 104 ][ 55 55 ][ 2 2 ][ 81 0 ]]
+[ [ 0 87 ][ 44 44 ][ 88 88 ][ 76 76 ][ 21 21 ][ 56 56 ][ 82 82 ][ 79 79 ][ 104 104 ][ 7 7 ][ 120 120 ][ 94 94 ][ 56 56 ][ 65 65 ][ 34 34 ][ 125 125 ][ 114 114 ][ 37 37 ][ 96 96 ][ 106 106 ][ 81 81 ][ 63 63 ][ 86 86 ][ 16 16 ][ 82 82 ][ 21 21 ][ 124 124 ][ 66 66 ][ 64 64 ][ 4 0 ]]
 Array after  29  passes:
-[ 2 6 10 12 19 32 36 37 41 42 46 48 52 54 55 57 76 81 86 91 94 95 95 101 104 108 108 109 119 123 ]
+[ 4 7 16 21 21 34 37 44 56 56 63 64 65 66 76 79 81 82 82 86 87 88 94 96 104 106 114 120 124 125 ]
 Messages sent:  2566
 Messages received:  2566
-Comparisions:  1850
-Execution time:  712.647µs
+Comparisions:  2046
+Execution time:  735.769µs
+==========================
+Random array generated:
+[ [ 0 13 ][ 48 48 ][ 64 64 ][ 5 5 ][ 17 17 ][ 66 66 ][ 103 103 ][ 124 124 ][ 44 44 ][ 121 121 ][ 116 116 ][ 63 63 ][ 73 73 ][ 51 51 ][ 110 110 ][ 143 143 ][ 125 125 ][ 83 83 ][ 138 138 ][ 37 37 ][ 83 83 ][ 67 67 ][ 0 0 ][ 143 143 ][ 12 12 ][ 56 56 ][ 50 50 ][ 89 89 ][ 11 11 ][ 32 32 ][ 79 79 ][ 56 56 ][ 89 89 ][ 1 1 ][ 99 99 ][ 102 102 ][ 90 90 ][ 46 46 ][ 42 42 ][ 73 73 ][ 140 140 ][ 2 2 ][ 148 148 ][ 56 56 ][ 113 113 ][ 137 137 ][ 10 10 ][ 148 148 ][ 36 36 ][ 19 0 ]]
+Array after  49  passes:
+[ 0 1 2 5 10 11 12 13 17 19 32 36 37 42 44 46 48 50 51 56 56 56 63 64 66 67 73 73 79 83 83 89 89 90 99 102 103 110 113 116 121 124 125 137 138 140 143 143 148 148 ]
+Messages sent:  7368
+Messages received:  7368
+Comparisions:  5427
+Execution time:  1.290813ms
 ==========================
 
 ## An alternative time-optimal algorithm for distributed sorting on a line network
@@ -101,36 +119,45 @@ An alternative approach where each node is labelled from 0 through 2, the middle
     go run alternative/alternative.go <number of processes>
 ```
 
-> if number of processes are not given a default values of `10`,`20` and `30` will be taken.
+> if number of processes are not given a default values of `10`,`20`, `30` and `50` will be taken.
 
 ### Sample Output
 
 ==========================
 N =  10
 -----------------------
-Random array generated: [18 16 2 6 8 7 14 5 0 4]
-Array after  9  passes:  [0 2 4 5 6 7 8 14 16 18]
+Random array generated: [4 4 13 10 0 8 7 7 8 10]
+Array after  9  passes:  [0 4 4 7 7 8 8 10 10 13]
 Messages sent:  108
 Messages received:  108
 Comparisions:  84
-Execution time:  115.875µs
+Execution time:  50.35µs
 ==========================
 N =  20
 -----------------------
-Random array generated: [12 5 6 6 23 11 28 2 8 3 0 12 28 6 3 5 18 8 17 16]
-Array after  19  passes:  [0 2 3 3 5 5 6 6 6 8 8 11 12 12 16 17 18 23 28 28]
+Random array generated: [8 9 23 9 13 27 0 11 7 0 22 27 27 21 24 15 0 20 12 15]
+Array after  19  passes:  [0 0 0 7 8 9 9 11 12 13 15 15 20 21 22 23 24 27 27 27]
 Messages sent:  590
 Messages received:  590
 Comparisions:  452
-Execution time:  248.545µs
+Execution time:  257.683µs
 ==========================
 N =  30
 -----------------------
-Random array generated: [15 8 20 23 13 30 23 8 37 12 24 7 13 31 38 31 34 36 24 13 3 28 0 29 35 11 7 10 27 4]
-Array after  29  passes:  [0 3 4 7 7 8 8 10 11 12 13 13 13 15 20 23 23 24 24 27 28 29 30 31 31 34 35 36 37 38]
+Random array generated: [23 31 14 30 12 19 20 14 37 1 21 11 38 23 4 2 4 28 5 13 14 2 21 22 1 2 30 5 25 21]
+Array after  29  passes:  [1 1 2 2 2 4 4 5 5 11 12 13 14 14 14 19 20 21 21 21 22 23 23 25 28 30 30 31 37 38]
 Messages sent:  1712
 Messages received:  1712
-Comparisions:  1300
-Execution time:  459.461µs
+Comparisions:  1303
+Execution time:  660.229µs
+==========================
+N =  50
+-----------------------
+Random array generated: [23 2 48 3 20 10 33 33 33 9 48 10 20 54 6 33 19 28 8 0 15 52 44 24 32 20 30 4 41 14 3 58 34 57 4 47 32 41 43 8 33 57 54 53 35 37 57 45 39 29]
+Array after  49  passes:  [0 2 3 3 4 4 6 8 8 9 10 10 14 15 19 20 20 20 23 24 28 29 30 32 32 33 33 33 33 33 34 35 37 39 41 41 43 44 45 47 48 48 52 53 54 54 57 57 57 58]
+Messages sent:  4908
+Messages received:  4904
+Comparisions:  3718
+Execution time:  1.132313ms
 ==========================
 

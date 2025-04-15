@@ -14,7 +14,7 @@ The algorithm extends efficiently to the case of multiple items per processor. I
 ```bash
     go run oddeven/oddeven.go <number of processes>
 ```
-> if number of processes are not given a default values of `10`,`20` and `30` will be taken.
+> if number of processes are not given a default values of `10`,`20`, `30` and `50` will be taken.
 
 ### Sample Output
 
@@ -31,7 +31,7 @@ The algorithm extends efficiently to the case of multiple items per processor. I
 ```bash
     go run sasaki/sasaki.go <number of processes>
 ```
-> if number of processes are not given a default values of `10`,`20` and `30` will be taken.
+> if number of processes are not given a default values of `10`,`20`, `30` and `50` will be taken.
 
 ### Sample Output
 
@@ -47,7 +47,7 @@ An alternative approach where each node is labelled from 0 through 2, the middle
     go run alternative/alternative.go <number of processes>
 ```
 
-> if number of processes are not given a default values of `10`,`20` and `30` will be taken.
+> if number of processes are not given a default values of `10`,`20`, `30` and `50` will be taken.
 
 ### Sample Output
 
